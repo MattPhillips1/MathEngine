@@ -1,90 +1,51 @@
+#ifndef P_VECTOR
+#define P_VECTOR
+
 #include <cmath>
 #include <stdexcept>
 
-class PhysVector {
-	public:
-		PhysVector() noexcept : i(0), j(0), k(0){}
-		PhysVector(float i, float j, float k) noexcept : i(i), j(j), k(k){}
-		PhysVector(const PhysVector& o) noexcept : i(o.i), j(o.j), k(o.k){}
-		PhysVector(PhysVector&& o) noexcept : i(o.i), j(o.j), k(o.k){}
-		PhysVector& operator=(const PhysVector& o) noexcept {
-			if (this == &o) return *this;
-			i = o.i;
-			j = o.j;
-			k = o.k;
-			return *this;
-		}
+namespace mathengine {
+	class PhysVector {
+		public:
+			PhysVector() noexcept : i(0), j(0), k(0){}
+			PhysVector(double i, double j, double k) noexcept : i(i), j(j), k(k){}
+			PhysVector(const PhysVector& o) noexcept : i(o.i), j(o.j), k(o.k){}
+			PhysVector(PhysVector&& o) noexcept : i(o.i), j(o.j), k(o.k){}
+			PhysVector& operator=(const PhysVector& o) noexcept;
+			bool operator==(const PhysVector& o) const noexcept;
+			bool operator!=(const PhysVector& o) const noexcept;
 
-		// Vector addition
-		PhysVector& operator+=(const PhysVector& o) noexcept {
-			i += o.i;
-			j += o.j;
-			k += o.k;
-			return *this;
-		}
-		const PhysVector operator+(const PhysVector& o) const noexcept {
-			return PhysVector(*this) += o;
-		}
-		// Vector subtraction
-		PhysVector& operator-=(const PhysVector& o) noexcept {
-			i -= o.i;
-			j -= o.j;
-			k -= o.k;
-			return *this;
-		}
-		const PhysVector operator-(const PhysVector& o) const noexcept {
-			return PhysVector(*this) -= o;
-		}
+			// Vector addition
+			PhysVector& operator+=(const PhysVector& o) noexcept;
+			const PhysVector operator+(const PhysVector& o) const noexcept;
 
-		// Scalar Multiplication
-		PhysVector& operator*=(const float s) noexcept {
-			i *= s;
-			j *= s;
-			k *= s;
-			return *this;
-		}
-		const PhysVector operator*(const float s) const noexcept {
-			return PhysVector(*this) *= s;
-		}
-		// Scalar division
-		PhysVector& operator/=(const float s) {
-			if (s == 0) throw std::runtime_error("Math error: Division by 0");
-			i /= s;
-			j /= s;
-			k /= s;
-			return *this;
-		}
-		const PhysVector operator/(const float s) const {
-			return PhysVector(*this) /= s;
-		}
+			// Vector subtraction
+			PhysVector& operator-=(const PhysVector& o) noexcept;
+			const PhysVector operator-(const PhysVector& o) const noexcept;
 
-		float dot(const PhysVector& o) const noexcept {
-			return i*o.i + j*o.j + k*o.k;
-		}
+			// Scalar Multiplication
+			PhysVector& operator*=(const double s) noexcept;
+			const PhysVector operator*(const double s) const noexcept;
 
-		PhysVector cross(const PhysVector& o) const noexcept {
-			return PhysVector(
-					j*o.k - k*o.j,
-					i*o.k - k*o.i,
-					i*o.j - j*o.i);
-		}
+			// Scalar division
+			PhysVector& operator/=(const double s);
+			const PhysVector operator/(const double s) const;
 
-		float magnitude() const noexcept {
-			return std::sqrt(i*i + j*j + k*k);
-		}
+			double dot(const PhysVector& o) const noexcept;
 
-		void normalize() {
-			(*this) /= this->magnitude();
-		}
+			PhysVector cross(const PhysVector& o) const noexcept;
 
-		PhysVector norm() const {
-			auto temp = PhysVector(*this);
-			temp.normalize();
-			return temp;
-		}
+			double magnitude() const noexcept;
 
-	protected:
-		float i;
-		float j;
-		float k;
+			void normalize();
+
+			PhysVector norm() const;
+
+
+			double i;
+			double j;
+			double k;
+	};
+	const PhysVector operator*(const double k, const PhysVector& v) noexcept;
 };
+#endif
