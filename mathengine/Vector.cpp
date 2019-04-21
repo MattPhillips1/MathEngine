@@ -49,10 +49,8 @@ namespace mathengine {
 	// Scalar division
 	PhysVector& PhysVector::operator/=(const double s) {
 		if (s == 0) throw std::runtime_error("Math error: Division by 0");
-		i /= s;
-		j /= s;
-		k /= s;
-		return *this;
+		auto div = 1.0/s;
+		return (*this) *= div;
 	}
 	const PhysVector PhysVector::operator/(const double s) const {
 		return PhysVector(*this) /= s;
