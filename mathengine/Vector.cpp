@@ -94,4 +94,4 @@ namespace mathengine {
 		return temp;
 	}
 
-};
+}
