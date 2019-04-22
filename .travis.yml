@@ -9,20 +9,14 @@ env:
     - RUN_TESTS=true
     - COVERAGE=false
 
-matrix:
-  include:
-    os: linux
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-7
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-
-before_install:
-  - eval "${MATRIX_EVAL}"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-7
+      - g++-7
+      - cmake
 
 install:
   - echo ${PATH}
@@ -40,6 +34,14 @@ install:
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     fi
 script:
+  - ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
+  - ln -s /usr/bin/g++-7 /usr/local/bin/g++
+  # Export CC and CXX to tell cmake which compiler to use
+  - export CC=/usr/bin/gcc-7
+  - export CXX=/usr/bin/g++-7
+  # Check versions of gcc, g++ and cmake
+  - gcc -v && g++ -v && cmake --version
+
     ############################################################################
     # Build main and tests
     ############################################################################
