@@ -7,10 +7,10 @@
 namespace mathengine {
 	class PhysVector {
 		public:
-			PhysVector() noexcept : i(0), j(0), k(0){}
-			PhysVector(double i, double j, double k) noexcept : i(i), j(j), k(k){}
-			PhysVector(const PhysVector& o) noexcept : i(o.i), j(o.j), k(o.k){}
-			PhysVector(PhysVector&& o) noexcept : i(o.i), j(o.j), k(o.k){}
+			PhysVector() noexcept : _i(0), _j(0), _k(0){}
+			PhysVector(double i, double j, double k) noexcept : _i(i), _j(j), _k(k){}
+			PhysVector(const PhysVector& o) noexcept : _i(o.i()), _j(o.j()), _k(o.k()){}
+			PhysVector(PhysVector&& o) noexcept : _i(o.i()), _j(o.j()), _k(o.k()){}
 			PhysVector& operator=(const PhysVector& o) noexcept;
 			bool operator==(const PhysVector& o) const noexcept;
 			bool operator!=(const PhysVector& o) const noexcept;
@@ -41,10 +41,19 @@ namespace mathengine {
 
 			PhysVector norm() const;
 
+			inline double i() const noexcept { return _i; }
+			inline double j() const noexcept { return _j; }
+			inline double k() const noexcept { return _k; }
 
-			double i;
-			double j;
-			double k;
+			inline void i(const double n) noexcept { _i = n; }
+			inline void j(const double n) noexcept { _j = n; }
+			inline void k(const double n) noexcept { _k = n; }
+
+
+		private:
+			double _i;
+			double _j;
+			double _k;
 	};
 	const PhysVector operator*(const double k, const PhysVector& v) noexcept;
 };
