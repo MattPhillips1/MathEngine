@@ -1,4 +1,5 @@
 language: cpp
+
 env:
   global:
     # Ubuntu version
@@ -15,7 +16,6 @@ addons:
     packages:
       - gcc-7
       - g++-7
-      - cmake
 
 install:
   - echo ${PATH}
@@ -24,13 +24,20 @@ install:
   - ${CXX} -v
   - sudo pip install codecov
 
+  # Download and install recent cmake
+  - |
+    if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+      CMAKE_URL="http://www.cmake.org/files/v3.14/cmake-3.14.2-Linux-x86_64.tar.gz"
+      mkdir -p ${DEPS_DIR}/cmake
+      travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
+      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+    fi
 script:
   # Export CC and CXX to tell cmake which compiler to use
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
-
     ############################################################################
     # Build main and tests
     ############################################################################
