@@ -7,10 +7,10 @@
 namespace mathengine {
 	class PhysVector {
 		public:
-			PhysVector() noexcept : _i(0), _j(0), _k(0){}
-			PhysVector(double i, double j, double k) noexcept : _i(i), _j(j), _k(k){}
-			PhysVector(const PhysVector& o) noexcept : _i(o.i()), _j(o.j()), _k(o.k()){}
-			PhysVector(PhysVector&& o) noexcept : _i(o.i()), _j(o.j()), _k(o.k()){}
+			PhysVector() noexcept : _i{0}, _j{0}, _k{0}, mag{0}, mag_valid{true}{}
+			PhysVector(double i, double j, double k) noexcept : _i{i}, _j{j}, _k{k}, mag{0}, mag_valid{false}{}
+			PhysVector(const PhysVector& o) noexcept : _i{o.i()}, _j{o.j()}, _k{o.k()}, mag{o.mag}, mag_valid{o.mag_valid}{}
+			PhysVector(PhysVector&& o) noexcept : _i{o.i()}, _j{o.j()}, _k{o.k()}, mag{o.mag}, mag_valid{o.mag_valid} {}
 			PhysVector& operator=(const PhysVector& o) noexcept;
 			bool operator==(const PhysVector& o) const noexcept;
 			bool operator!=(const PhysVector& o) const noexcept;
@@ -26,6 +26,7 @@ namespace mathengine {
 			// Scalar Multiplication
 			PhysVector& operator*=(const double s) noexcept;
 			const PhysVector operator*(const double s) const noexcept;
+			friend const PhysVector operator*(const double k, const PhysVector& v) noexcept;
 
 			// Scalar division
 			PhysVector& operator/=(const double s);
@@ -45,16 +46,17 @@ namespace mathengine {
 			inline double j() const noexcept { return _j; }
 			inline double k() const noexcept { return _k; }
 
-			inline void i(const double n) noexcept { _i = n; }
-			inline void j(const double n) noexcept { _j = n; }
-			inline void k(const double n) noexcept { _k = n; }
+			inline void i(const double n) noexcept { mag_valid = false; _i = n; }
+			inline void j(const double n) noexcept { mag_valid = false; _j = n; }
+			inline void k(const double n) noexcept { mag_valid = false; _k = n; }
 
 
 		private:
 			double _i;
 			double _j;
 			double _k;
+			mutable double mag;
+			mutable bool mag_valid;
 	};
-	const PhysVector operator*(const double k, const PhysVector& v) noexcept;
 };
 #endif

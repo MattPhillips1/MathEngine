@@ -12,6 +12,8 @@ namespace mathengine {
 		i(o.i());
 		j(o.j());
 		k(o.k());
+		mag_valid = o.mag_valid;
+		mag = o.mag;
 		return *this;
 	}
 
@@ -20,6 +22,7 @@ namespace mathengine {
 		i(i() + o.i());
 		j(j() + o.j());
 		k(k() + o.k());
+		mag_valid = false;
 		return *this;
 	}
 	const PhysVector PhysVector::operator+(const PhysVector& o) const noexcept {
@@ -30,6 +33,7 @@ namespace mathengine {
 		i(i() - o.i());
 		j(j() - o.j());
 		k(k() - o.k());
+		mag_valid = false;
 		return *this;
 	}
 	const PhysVector PhysVector::operator-(const PhysVector& o) const noexcept {
@@ -41,6 +45,7 @@ namespace mathengine {
 		i(i() * s);
 		j(j() * s);
 		k(k() * s);
+		if(mag_valid) mag *= s;
 		return *this;
 	}
 	const PhysVector PhysVector::operator*(const double s) const noexcept {
@@ -68,7 +73,11 @@ namespace mathengine {
 	}
 
 	double PhysVector::magnitude() const noexcept {
-		return std::sqrt(i()*i() + j()*j() + k()*k());
+		if (!mag_valid){
+			mag = std::sqrt(i()*i() + j()*j() + k()*k());
+			mag_valid = true;
+		}
+		return mag;
 	}
 
 	void PhysVector::normalize() {
