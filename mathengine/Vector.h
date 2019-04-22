@@ -58,5 +58,5 @@ namespace mathengine {
 			mutable double mag;
 			mutable bool mag_valid;
 	};
-};
+}
 #endif

@@ -5,8 +5,6 @@ env:
     # Ubuntu version
     - LINUX_DIST=trusty
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    # Global build options and C++ flags
-    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
     # Misc
     - RUN_TESTS=true
     - COVERAGE=false
@@ -32,6 +30,6 @@ script:
     ############################################################################
      - mkdir -p build
      - cd build
-     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON ..
+     - cmake
      - make
      - ctest
