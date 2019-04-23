@@ -10,22 +10,22 @@ TEST(PhysMatrixTest, DefaultConstructor) {
 	auto t = mathengine::PhysMatrix();
 	for(int i = 0; i < 3; ++i){
 		const auto& r = t[i];
-		EXPECT_EQ(0, r.i());
-		EXPECT_EQ(0, r.j());
-		EXPECT_EQ(0, r.k());
+		EXPECT_DOUBLE_EQ(0, r.i());
+		EXPECT_DOUBLE_EQ(0, r.j());
+		EXPECT_DOUBLE_EQ(0, r.k());
 	}
 }
 TEST(PhysMatrixTest, ExplicitConstructor) {
 	auto t = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
-	EXPECT_EQ(1, t[0].i());
-	EXPECT_EQ(0, t[0].j());
-	EXPECT_EQ(0, t[0].k());
-	EXPECT_EQ(0, t[1].i());
-	EXPECT_EQ(1, t[1].j());
-	EXPECT_EQ(0, t[1].k());
-	EXPECT_EQ(0, t[2].i());
-	EXPECT_EQ(0, t[2].j());
-	EXPECT_EQ(1, t[2].k());
+	EXPECT_DOUBLE_EQ(1, t[0].i());
+	EXPECT_DOUBLE_EQ(0, t[0].j());
+	EXPECT_DOUBLE_EQ(0, t[0].k());
+	EXPECT_DOUBLE_EQ(0, t[1].i());
+	EXPECT_DOUBLE_EQ(1, t[1].j());
+	EXPECT_DOUBLE_EQ(0, t[1].k());
+	EXPECT_DOUBLE_EQ(0, t[2].i());
+	EXPECT_DOUBLE_EQ(0, t[2].j());
+	EXPECT_DOUBLE_EQ(1, t[2].k());
 }
 TEST(PhysMatrixTest, VectorCopyConstructor) {
 	auto r1 = mathengine::PhysVector(2,3,4);
@@ -57,121 +57,121 @@ TEST(PhysMatrixTest, AdditionAssign) {
 	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
 	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
 	t1 += t2;
-	EXPECT_EQ(2, t1[0].i());
-	EXPECT_EQ(4, t1[0].j());
-	EXPECT_EQ(3, t1[0].k());
-	EXPECT_EQ(0, t1[1].i());
-	EXPECT_EQ(2, t1[1].j());
-	EXPECT_EQ(0, t1[1].k());
-	EXPECT_EQ(6, t1[2].i());
-	EXPECT_EQ(7, t1[2].j());
-	EXPECT_EQ(2, t1[2].k());
+	EXPECT_DOUBLE_EQ(2, t1[0].i());
+	EXPECT_DOUBLE_EQ(4, t1[0].j());
+	EXPECT_DOUBLE_EQ(3, t1[0].k());
+	EXPECT_DOUBLE_EQ(0, t1[1].i());
+	EXPECT_DOUBLE_EQ(2, t1[1].j());
+	EXPECT_DOUBLE_EQ(0, t1[1].k());
+	EXPECT_DOUBLE_EQ(6, t1[2].i());
+	EXPECT_DOUBLE_EQ(7, t1[2].j());
+	EXPECT_DOUBLE_EQ(2, t1[2].k());
 }
 TEST(PhysMatrixTest, Addition) {
 	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
 	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
 	auto t3 = t1 + t2;
-	EXPECT_EQ(2, t3[0].i());
-	EXPECT_EQ(4, t3[0].j());
-	EXPECT_EQ(3, t3[0].k());
-	EXPECT_EQ(0, t3[1].i());
-	EXPECT_EQ(2, t3[1].j());
-	EXPECT_EQ(0, t3[1].k());
-	EXPECT_EQ(6, t3[2].i());
-	EXPECT_EQ(7, t3[2].j());
-	EXPECT_EQ(2, t3[2].k());
+	EXPECT_DOUBLE_EQ(2, t3[0].i());
+	EXPECT_DOUBLE_EQ(4, t3[0].j());
+	EXPECT_DOUBLE_EQ(3, t3[0].k());
+	EXPECT_DOUBLE_EQ(0, t3[1].i());
+	EXPECT_DOUBLE_EQ(2, t3[1].j());
+	EXPECT_DOUBLE_EQ(0, t3[1].k());
+	EXPECT_DOUBLE_EQ(6, t3[2].i());
+	EXPECT_DOUBLE_EQ(7, t3[2].j());
+	EXPECT_DOUBLE_EQ(2, t3[2].k());
 }
 TEST(PhysMatrixTest, SubtractionAssign) {
 	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
 	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
 	t1 -= t2;
-	EXPECT_EQ(0, t1[0].i());
-	EXPECT_EQ(-4, t1[0].j());
-	EXPECT_EQ(-3, t1[0].k());
-	EXPECT_EQ(0, t1[1].i());
-	EXPECT_EQ(0, t1[1].j());
-	EXPECT_EQ(0, t1[1].k());
-	EXPECT_EQ(-6, t1[2].i());
-	EXPECT_EQ(-7, t1[2].j());
-	EXPECT_EQ(0, t1[2].k());
+	EXPECT_DOUBLE_EQ(0, t1[0].i());
+	EXPECT_DOUBLE_EQ(-4, t1[0].j());
+	EXPECT_DOUBLE_EQ(-3, t1[0].k());
+	EXPECT_DOUBLE_EQ(0, t1[1].i());
+	EXPECT_DOUBLE_EQ(0, t1[1].j());
+	EXPECT_DOUBLE_EQ(0, t1[1].k());
+	EXPECT_DOUBLE_EQ(-6, t1[2].i());
+	EXPECT_DOUBLE_EQ(-7, t1[2].j());
+	EXPECT_DOUBLE_EQ(0, t1[2].k());
 }
 TEST(PhysMatrixTest, Subtraction) {
 	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
 	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
 	auto t3 = t1 - t2;
-	EXPECT_EQ(0, t3[0].i());
-	EXPECT_EQ(-4, t3[0].j());
-	EXPECT_EQ(-3, t3[0].k());
-	EXPECT_EQ(0, t3[1].i());
-	EXPECT_EQ(0, t3[1].j());
-	EXPECT_EQ(0, t3[1].k());
-	EXPECT_EQ(-6, t3[2].i());
-	EXPECT_EQ(-7, t3[2].j());
-	EXPECT_EQ(0, t3[2].k());
+	EXPECT_DOUBLE_EQ(0, t3[0].i());
+	EXPECT_DOUBLE_EQ(-4, t3[0].j());
+	EXPECT_DOUBLE_EQ(-3, t3[0].k());
+	EXPECT_DOUBLE_EQ(0, t3[1].i());
+	EXPECT_DOUBLE_EQ(0, t3[1].j());
+	EXPECT_DOUBLE_EQ(0, t3[1].k());
+	EXPECT_DOUBLE_EQ(-6, t3[2].i());
+	EXPECT_DOUBLE_EQ(-7, t3[2].j());
+	EXPECT_DOUBLE_EQ(0, t3[2].k());
 }
 TEST(PhysMatrixTest, ScalarMultiplicationAssign){
 	auto t = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
 	t *= 2;
 
-	EXPECT_EQ(2, t[0].i());
-	EXPECT_EQ(8, t[0].j());
-	EXPECT_EQ(6, t[0].k());
-	EXPECT_EQ(0, t[1].i());
-	EXPECT_EQ(2, t[1].j());
-	EXPECT_EQ(0, t[1].k());
-	EXPECT_EQ(12, t[2].i());
-	EXPECT_EQ(14, t[2].j());
-	EXPECT_EQ(2, t[2].k());
+	EXPECT_DOUBLE_EQ(2, t[0].i());
+	EXPECT_DOUBLE_EQ(8, t[0].j());
+	EXPECT_DOUBLE_EQ(6, t[0].k());
+	EXPECT_DOUBLE_EQ(0, t[1].i());
+	EXPECT_DOUBLE_EQ(2, t[1].j());
+	EXPECT_DOUBLE_EQ(0, t[1].k());
+	EXPECT_DOUBLE_EQ(12, t[2].i());
+	EXPECT_DOUBLE_EQ(14, t[2].j());
+	EXPECT_DOUBLE_EQ(2, t[2].k());
 }
 TEST(PhysMatrixTest, ScalarMultiplication){
 	auto t = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
 	auto t2 = 2*t;
 
-	EXPECT_EQ(2, t2[0].i());
-	EXPECT_EQ(8, t2[0].j());
-	EXPECT_EQ(6, t2[0].k());
-	EXPECT_EQ(0, t2[1].i());
-	EXPECT_EQ(2, t2[1].j());
-	EXPECT_EQ(0, t2[1].k());
-	EXPECT_EQ(12, t2[2].i());
-	EXPECT_EQ(14, t2[2].j());
-	EXPECT_EQ(2, t2[2].k());
+	EXPECT_DOUBLE_EQ(2, t2[0].i());
+	EXPECT_DOUBLE_EQ(8, t2[0].j());
+	EXPECT_DOUBLE_EQ(6, t2[0].k());
+	EXPECT_DOUBLE_EQ(0, t2[1].i());
+	EXPECT_DOUBLE_EQ(2, t2[1].j());
+	EXPECT_DOUBLE_EQ(0, t2[1].k());
+	EXPECT_DOUBLE_EQ(12, t2[2].i());
+	EXPECT_DOUBLE_EQ(14, t2[2].j());
+	EXPECT_DOUBLE_EQ(2, t2[2].k());
 }
 TEST(PhysMatrixTest, ScalarDivisionAssign){
 	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
 	t /= 2;
 
-	EXPECT_EQ(0.5, t[0].i());
-	EXPECT_EQ(1, t[0].j());
-	EXPECT_EQ(1.5, t[0].k());
-	EXPECT_EQ(2, t[1].i());
-	EXPECT_EQ(2.5, t[1].j());
-	EXPECT_EQ(3, t[1].k());
-	EXPECT_EQ(3.5, t[2].i());
-	EXPECT_EQ(4, t[2].j());
-	EXPECT_EQ(4.5, t[2].k());
+	EXPECT_DOUBLE_EQ(0.5, t[0].i());
+	EXPECT_DOUBLE_EQ(1, t[0].j());
+	EXPECT_DOUBLE_EQ(1.5, t[0].k());
+	EXPECT_DOUBLE_EQ(2, t[1].i());
+	EXPECT_DOUBLE_EQ(2.5, t[1].j());
+	EXPECT_DOUBLE_EQ(3, t[1].k());
+	EXPECT_DOUBLE_EQ(3.5, t[2].i());
+	EXPECT_DOUBLE_EQ(4, t[2].j());
+	EXPECT_DOUBLE_EQ(4.5, t[2].k());
 }
 TEST(PhysMatrixTest, ScalarDivision){
 	auto t1 = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
 	auto t = t1/2;
 
-	EXPECT_EQ(0.5, t[0].i());
-	EXPECT_EQ(1, t[0].j());
-	EXPECT_EQ(1.5, t[0].k());
-	EXPECT_EQ(2, t[1].i());
-	EXPECT_EQ(2.5, t[1].j());
-	EXPECT_EQ(3, t[1].k());
-	EXPECT_EQ(3.5, t[2].i());
-	EXPECT_EQ(4, t[2].j());
-	EXPECT_EQ(4.5, t[2].k());
+	EXPECT_DOUBLE_EQ(0.5, t[0].i());
+	EXPECT_DOUBLE_EQ(1, t[0].j());
+	EXPECT_DOUBLE_EQ(1.5, t[0].k());
+	EXPECT_DOUBLE_EQ(2, t[1].i());
+	EXPECT_DOUBLE_EQ(2.5, t[1].j());
+	EXPECT_DOUBLE_EQ(3, t[1].k());
+	EXPECT_DOUBLE_EQ(3.5, t[2].i());
+	EXPECT_DOUBLE_EQ(4, t[2].j());
+	EXPECT_DOUBLE_EQ(4.5, t[2].k());
 }
 TEST(PhysMatrixTest, VectorMultiplication){
 	auto v = mathengine::PhysVector(1,2,3);
 	auto m = mathengine::PhysMatrix(3,3,3,3,3,3,3,3,3);
 	auto u = m*v;
-	EXPECT_EQ(18, u.i());
-	EXPECT_EQ(18, u.j());
-	EXPECT_EQ(18, u.k());
+	EXPECT_DOUBLE_EQ(18, u.i());
+	EXPECT_DOUBLE_EQ(18, u.j());
+	EXPECT_DOUBLE_EQ(18, u.k());
 }
 TEST(PhysMatrixTest, MatrixMultiplicationAssign){
 	auto a = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
@@ -226,9 +226,22 @@ TEST(PhysMatrixTest, InverseOfIdentity){
 	auto u = t.inverse_of();
 	EXPECT_EQ(t,u);
 }
-TEST(PhysMatrixTest, InverseOf){
+TEST(PhysMatrixTest, InverseOfException){
 	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
 	ASSERT_THROW(t.inverse_of(), std::runtime_error);
+}
+TEST(PhysMatrixTest, InverseOf){
+	auto t = mathengine::PhysMatrix(1,4,5,7,2,8,9,1,2);
+	t = t.inverse_of();
+	EXPECT_DOUBLE_EQ(-4.0/173.0, t[0].i());
+	EXPECT_DOUBLE_EQ(-3.0/173.0, t[0].j());
+	EXPECT_DOUBLE_EQ(22.0/173.0, t[0].k());
+	EXPECT_DOUBLE_EQ(58.0/173.0, t[1].i());
+	EXPECT_DOUBLE_EQ(-43.0/173.0, t[1].j());
+	EXPECT_DOUBLE_EQ(27.0/173.0, t[1].k());
+	EXPECT_DOUBLE_EQ(-11.0/173.0, t[2].i());
+	EXPECT_DOUBLE_EQ(35.0/173.0, t[2].j());
+	EXPECT_DOUBLE_EQ(-26.0/173.0, t[2].k());
 }
 TEST(PhysMatrixTest, Determinate){
 	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);

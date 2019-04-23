@@ -112,8 +112,10 @@ namespace mathengine {
 		auto r3 = make_vec(1,0,1);
 
 		double det = rows[0].i() * r1.i() + rows[0].j() * r1.j() + rows[0].k() * r1.k();
+		auto m = PhysMatrix(r1, r2, r3);
+		m.transpose();
 
-		return PhysMatrix(r1,r2,r3)/det;
+		return m/det;
 	}
 	double PhysMatrix::det() const noexcept {
 		double d = cross_part(rows[0].i(), rows[1].j(), rows[1].k(), rows[2].j(), rows[2].k());
