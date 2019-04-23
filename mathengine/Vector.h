@@ -50,7 +50,6 @@ namespace mathengine {
 			inline void j(const double n) noexcept { mag_valid = false; _j = n; }
 			inline void k(const double n) noexcept { mag_valid = false; _k = n; }
 
-
 		private:
 			double _i;
 			double _j;

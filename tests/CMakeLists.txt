@@ -23,7 +23,11 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
                  ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
                  EXCLUDE_FROM_ALL)
 
-add_executable(Test test_vector.cpp)
 include_directories(../mathengine)
-target_link_libraries(Test MathEngine gtest_main)
-add_test(NAME Test COMMAND Test)
+
+add_executable(Vector test_vector.cpp)
+add_executable(Matrix test_matrix.cpp)
+target_link_libraries(Vector MathEngine gtest_main)
+target_link_libraries(Matrix MathEngine gtest_main)
+add_test(NAME Vector COMMAND Vector)
+add_test(NAME Matrix COMMAND Matrix)
