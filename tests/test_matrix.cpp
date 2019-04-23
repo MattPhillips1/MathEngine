@@ -246,7 +246,7 @@ TEST(PhysMatrixTest, InverseOf){
 TEST(PhysMatrixTest, Determinate){
 	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
 	auto d = t.det();
-	EXPECT_EQ(0,d);
+	EXPECT_DOUBLE_EQ(0,d);
 }
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
