@@ -165,15 +165,13 @@ TEST(PhysQuaternionTest, ConjugateOf){
 }
 TEST(PhysQuaternionTest, InverseOf){
 	auto t = mathengine::PhysQuaternion(3,5,8,2);
-	auto w = t;
 	auto d = t.square_sum();
 	t = t.inverse_of();
 	EXPECT_DOUBLE_EQ(3/d, t.s());
 	auto v = t.v();
-	auto u = w.v();
-	EXPECT_DOUBLE_EQ((u.i()*-1)/d, v.i());
-	EXPECT_DOUBLE_EQ((u.j()*-1)/d, v.j());
-	EXPECT_DOUBLE_EQ((u.k()*-1)/d, v.k());
+	EXPECT_DOUBLE_EQ(-5/d, v.i());
+	EXPECT_DOUBLE_EQ(-8/d, v.j());
+	EXPECT_DOUBLE_EQ(-2/d, v.k());
 }
 
 int main(int argc, char **argv) {
