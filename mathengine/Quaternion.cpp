@@ -66,11 +66,7 @@ namespace mathengine {
 	}
 
 	double PhysQuaternion::magnitude() const noexcept {
-		double sum = s()*s();
-		sum += v().i() * v().i();
-		sum += v().j() * v().j();
-		sum += v().k() * v().k();
-		return std::sqrt(sum);
+		return std::sqrt(square_sum());
 	}
 	void PhysQuaternion::normalize() noexcept {
 		*this /= magnitude();
@@ -83,6 +79,12 @@ namespace mathengine {
 	PhysQuaternion PhysQuaternion::conjugate_of() const noexcept {
 		auto temp = *this;
 		temp.v() *= -1;
+		return temp;
+	}
+
+	PhysQuaternion PhysQuaternion::inverse_of() const {
+		auto temp = conjugate_of();
+		temp /= square_sum();
 		return temp;
 	}
 

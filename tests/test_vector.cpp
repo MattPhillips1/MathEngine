@@ -137,10 +137,14 @@ TEST(PhysVectorTest, Cross2) {
 	EXPECT_EQ(u.j(), 8.0);
 	EXPECT_EQ(u.k(), -4.0);
 }
+TEST(PhysVectorTest, SquareSum) {
+	auto s = mathengine::PhysVector(1.0,2.0,3.0);
+	EXPECT_DOUBLE_EQ(s.square_sum(), 14);
+}
 TEST(PhysVectorTest, Magnitude) {
 	auto s = mathengine::PhysVector(1.0,2.0,3.0);
 	auto n = s.magnitude();
-	EXPECT_EQ(n, std::sqrt(14));
+	EXPECT_DOUBLE_EQ(n, std::sqrt(14));
 }
 TEST(PhysVectorTest, Normalize) {
 	auto s = mathengine::PhysVector(1.0,2.0,3.0);

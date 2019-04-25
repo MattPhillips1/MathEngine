@@ -33,9 +33,13 @@ namespace mathengine {
 			const PhysQuaternion operator*(const PhysQuaternion& rhs) const noexcept;
 
 			double magnitude() const noexcept;
+			inline double square_sum() const noexcept { return s()*s() + v().square_sum(); }
+
 			void normalize() noexcept;
 			PhysQuaternion unit() const noexcept;
 			PhysQuaternion conjugate_of() const noexcept;
+
+			PhysQuaternion inverse_of() const;
 
 			PhysVector& v() noexcept {return _v;};
 			const PhysVector& v() const noexcept {return _v;};
@@ -47,6 +51,7 @@ namespace mathengine {
 		private:
 			double _s;
 			PhysVector _v;
+
 	};
 }
 #endif

@@ -78,7 +78,7 @@ namespace mathengine {
 
 	double PhysVector::magnitude() const noexcept {
 		if (!mag_valid){
-			mag = std::sqrt(i()*i() + j()*j() + k()*k());
+			mag = std::sqrt(square_sum());
 			mag_valid = true;
 		}
 		return mag;

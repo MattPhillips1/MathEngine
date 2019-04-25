@@ -40,6 +40,7 @@ namespace mathengine {
 			PhysVector cross(const PhysVector& o) const noexcept;
 
 			double magnitude() const noexcept;
+			inline double square_sum() const noexcept { return i()*i() + j()*j() + k()*k(); }
 
 			void normalize();
 
@@ -59,6 +60,7 @@ namespace mathengine {
 			double _k;
 			mutable double mag;
 			mutable bool mag_valid;
+
 	};
 }
 #endif

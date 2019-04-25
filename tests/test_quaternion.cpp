@@ -126,6 +126,10 @@ TEST(PhysQuaternionTest, QuartMult){
 	auto t = mathengine::PhysVector(28,48,44);
 	EXPECT_EQ(t,w.v());
 }
+TEST(PhysQuaternionTest, SquareSum){
+	auto v = mathengine::PhysQuaternion(2,3,4,5);
+	EXPECT_DOUBLE_EQ(2*2+3*3+4*4+5*5, v.square_sum());
+}
 TEST(PhysQuaternionTest, Magnitude){
 	auto v = mathengine::PhysQuaternion(2,3,4,5);
 	EXPECT_DOUBLE_EQ(std::sqrt(2*2+3*3+4*4+5*5), v.magnitude());
@@ -158,6 +162,18 @@ TEST(PhysQuaternionTest, ConjugateOf){
 	t *= -1;
 	EXPECT_EQ(t, w.v());
 	EXPECT_EQ(2, w.s());
+}
+TEST(PhysQuaternionTest, InverseOf){
+	auto t = mathengine::PhysQuaternion(3,5,8,2);
+	auto w = t;
+	auto d = t.square_sum();
+	t = t.inverse_of();
+	EXPECT_DOUBLE_EQ(3/d, t.s());
+	auto v = t.v();
+	auto u = w.v();
+	EXPECT_DOUBLE_EQ((u.i()*-1)/d, v.i());
+	EXPECT_DOUBLE_EQ((u.j()*-1)/d, v.j());
+	EXPECT_DOUBLE_EQ((u.k()*-1)/d, v.k());
 }
 
 int main(int argc, char **argv) {
