@@ -121,12 +121,20 @@ TEST(PhysVectorTest, Dot) {
 	EXPECT_EQ(n, m);
 	EXPECT_EQ(n, 10);
 }
-TEST(PhysVectorTest, Cross) {
+TEST(PhysVectorTest, Cross1) {
 	auto s = mathengine::PhysVector(1.0,2.0,3.0);
 	auto t = mathengine::PhysVector(3.0,2.0,1.0);
 	auto u = s.cross(t);
 	EXPECT_EQ(u.i(), -4.0);
-	EXPECT_EQ(u.j(), -8.0);
+	EXPECT_EQ(u.j(), 8.0);
+	EXPECT_EQ(u.k(), -4.0);
+}
+TEST(PhysVectorTest, Cross2) {
+	auto s = mathengine::PhysVector(3,4,5);
+	auto t = mathengine::PhysVector(7,8,9);
+	auto u = s.cross(t);
+	EXPECT_EQ(u.i(), -4.0);
+	EXPECT_EQ(u.j(), 8.0);
 	EXPECT_EQ(u.k(), -4.0);
 }
 TEST(PhysVectorTest, Magnitude) {
@@ -143,9 +151,9 @@ TEST(PhysVectorTest, Normalize) {
 	EXPECT_EQ(s.j(), 2.0/n);
 	EXPECT_EQ(s.k(), 3.0/n);
 }
-TEST(PhysVectorTest, Norm) {
+TEST(PhysVectorTest, Unit) {
 	auto s = mathengine::PhysVector(1.0,2.0,3.0);
-	auto t = s.norm();
+	auto t = s.unit();
 	auto n = s.magnitude();
 	EXPECT_EQ(t.magnitude(), 1);
 	EXPECT_EQ(t.i(), 1.0/n);

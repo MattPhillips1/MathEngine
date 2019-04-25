@@ -72,7 +72,7 @@ namespace mathengine {
 	PhysVector PhysVector::cross(const PhysVector& o) const noexcept {
 		return PhysVector(
 				j()*o.k() - k()*o.j(),
-				i()*o.k() - k()*o.i(),
+				k()*o.i() - i()*o.k(),
 				i()*o.j() - j()*o.i());
 	}
 
@@ -85,10 +85,12 @@ namespace mathengine {
 	}
 
 	void PhysVector::normalize() {
-		(*this) /= this->magnitude();
+		(*this) /= magnitude();
+		mag = 1;
+		mag_valid = true;
 	}
 
-	PhysVector PhysVector::norm() const {
+	PhysVector PhysVector::unit() const {
 		auto temp = PhysVector(*this);
 		temp.normalize();
 		return temp;

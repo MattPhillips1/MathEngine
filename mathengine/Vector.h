@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 namespace mathengine {
 	class PhysVector {
@@ -14,6 +15,8 @@ namespace mathengine {
 			PhysVector& operator=(const PhysVector& o) noexcept;
 			bool operator==(const PhysVector& o) const noexcept;
 			bool operator!=(const PhysVector& o) const noexcept;
+
+			friend std::ostream& operator<<(std::ostream& os, const PhysVector& rhs) noexcept { return os << "[ " << rhs.i() << ", " << rhs.j() << ", " << rhs.k() <<" ]";}
 
 			// Vector addition
 			PhysVector& operator+=(const PhysVector& o) noexcept;
@@ -40,7 +43,7 @@ namespace mathengine {
 
 			void normalize();
 
-			PhysVector norm() const;
+			PhysVector unit() const;
 
 			inline double i() const noexcept { return _i; }
 			inline double j() const noexcept { return _j; }
