@@ -98,6 +98,7 @@ namespace mathengine {
 		return temp;
 	}
 	PhysVector PhysVector::rotate(const double angle, const PhysVector& axis){
+		// Create it with the vector to avoid an extra copy
 		auto q = PhysQuaternion(angle, axis.unit());
 		q.make_rotation();
 		return rotate_unit(q);
@@ -106,7 +107,8 @@ namespace mathengine {
 		return rotate_unit(q.rotation_unit());
 	}
 	PhysVector PhysVector::rotate_unit(const PhysQuaternion& q){
-		// The quaternion here is set up for rotation
+		// Pre condition - Expects q to be ready for rotation
+		// in form [sin(0.5x), cos(0.5x)v]
 		auto p = PhysQuaternion(*this);
 		p = q*p*q.inverse_of();
 		return p.v();
