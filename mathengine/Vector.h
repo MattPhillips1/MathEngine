@@ -3,8 +3,12 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
+
 
 namespace mathengine {
+	class PhysQuaternion;
+
 	class PhysVector {
 		public:
 			PhysVector() noexcept : _i{0}, _j{0}, _k{0}, mag{0}, mag_valid{true}{}
@@ -14,6 +18,8 @@ namespace mathengine {
 			PhysVector& operator=(const PhysVector& o) noexcept;
 			bool operator==(const PhysVector& o) const noexcept;
 			bool operator!=(const PhysVector& o) const noexcept;
+
+			friend std::ostream& operator<<(std::ostream& os, const PhysVector& rhs) noexcept { return os << "[ " << rhs.i() << ", " << rhs.j() << ", " << rhs.k() <<" ]";}
 
 			// Vector addition
 			PhysVector& operator+=(const PhysVector& o) noexcept;
@@ -37,11 +43,15 @@ namespace mathengine {
 			PhysVector cross(const PhysVector& o) const noexcept;
 
 			double magnitude() const noexcept;
+			inline double square_sum() const noexcept { return i()*i() + j()*j() + k()*k(); }
 
 			void normalize();
 
-			PhysVector norm() const;
+			PhysVector unit() const;
 
+			PhysVector rotate(const double angle, const PhysVector& axis);
+			PhysVector rotate(const PhysQuaternion& q);
+			PhysVector rotate_unit(const PhysQuaternion& q);
 			inline double i() const noexcept { return _i; }
 			inline double j() const noexcept { return _j; }
 			inline double k() const noexcept { return _k; }
@@ -56,6 +66,7 @@ namespace mathengine {
 			double _k;
 			mutable double mag;
 			mutable bool mag_valid;
+
 	};
 }
 #endif

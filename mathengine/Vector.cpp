@@ -1,4 +1,6 @@
 #include "Vector.h"
+#include "Quaternion.h"
+
 namespace mathengine {
 	bool PhysVector::operator==(const PhysVector& o) const noexcept {
 		return i() == o.i() && j() == o.j() && k() == o.k();
@@ -72,26 +74,44 @@ namespace mathengine {
 	PhysVector PhysVector::cross(const PhysVector& o) const noexcept {
 		return PhysVector(
 				j()*o.k() - k()*o.j(),
-				i()*o.k() - k()*o.i(),
+				k()*o.i() - i()*o.k(),
 				i()*o.j() - j()*o.i());
 	}
 
 	double PhysVector::magnitude() const noexcept {
 		if (!mag_valid){
-			mag = std::sqrt(i()*i() + j()*j() + k()*k());
+			mag = std::sqrt(square_sum());
 			mag_valid = true;
 		}
 		return mag;
 	}
 
 	void PhysVector::normalize() {
-		(*this) /= this->magnitude();
+		(*this) /= magnitude();
+		mag = 1;
+		mag_valid = true;
 	}
 
-	PhysVector PhysVector::norm() const {
+	PhysVector PhysVector::unit() const {
 		auto temp = PhysVector(*this);
 		temp.normalize();
 		return temp;
+	}
+	PhysVector PhysVector::rotate(const double angle, const PhysVector& axis){
+		// Create it with the vector to avoid an extra copy
+		auto q = PhysQuaternion(angle, axis.unit());
+		q.make_rotation();
+		return rotate_unit(q);
+	}
+	PhysVector PhysVector::rotate(const PhysQuaternion& q){
+		return rotate_unit(q.rotation_unit());
+	}
+	PhysVector PhysVector::rotate_unit(const PhysQuaternion& q){
+		// Pre condition - Expects q to be ready for rotation
+		// in form [sin(0.5x), cos(0.5x)v]
+		auto p = PhysQuaternion(*this);
+		p = q*p*q.inverse_of();
+		return p.v();
 	}
 
 }
