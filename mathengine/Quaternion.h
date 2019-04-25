@@ -35,8 +35,10 @@ namespace mathengine {
 			double magnitude() const noexcept;
 			inline double square_sum() const noexcept { return s()*s() + v().square_sum(); }
 
-			void normalize() noexcept;
-			PhysQuaternion unit() const noexcept;
+			void normalize();
+			void make_rotation();
+			PhysQuaternion unit() const;
+			PhysQuaternion rotation_unit() const;
 			PhysQuaternion conjugate_of() const noexcept;
 
 			PhysQuaternion inverse_of() const;

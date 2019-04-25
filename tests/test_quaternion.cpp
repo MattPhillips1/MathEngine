@@ -173,6 +173,22 @@ TEST(PhysQuaternionTest, InverseOf){
 	EXPECT_DOUBLE_EQ(-8/d, v.j());
 	EXPECT_DOUBLE_EQ(-2/d, v.k());
 }
+TEST(PhysQuaternionTest, MakeRotation){
+	auto v = mathengine::PhysVector(1,0,0);
+	auto t = mathengine::PhysQuaternion(M_PI,v);
+	t.make_rotation();
+	auto u = mathengine::PhysVector(1,0,0);
+	EXPECT_DOUBLE_EQ(cos(M_PI/2), t.s());
+	EXPECT_EQ(u, t.v());
+}
+TEST(PhysQuaternionTest, RotationUnit){
+	auto v = mathengine::PhysVector(2,0,0);
+	auto t = mathengine::PhysQuaternion(M_PI,v);
+	t = t.rotation_unit();
+	auto u = mathengine::PhysVector(1,0,0);
+	EXPECT_DOUBLE_EQ(cos(M_PI/2), t.s());
+	EXPECT_EQ(u, t.v());
+}
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);

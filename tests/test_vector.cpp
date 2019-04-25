@@ -1,4 +1,5 @@
 #include "Vector.h"
+#include "Quaternion.h"
 #include "gtest/gtest.h"
 #include <cmath>
 
@@ -163,6 +164,30 @@ TEST(PhysVectorTest, Unit) {
 	EXPECT_EQ(t.i(), 1.0/n);
 	EXPECT_EQ(t.j(), 2.0/n);
 	EXPECT_EQ(t.k(), 3.0/n);
+}
+TEST(PhysVectorTest, RotateUnit) {
+	auto q = mathengine::PhysQuaternion(M_PI, 1, 1, 0);
+	q = q.rotation_unit();
+	auto t = mathengine::PhysVector(1,1,1);
+	t = t.rotate_unit(q);
+	EXPECT_DOUBLE_EQ(1, t.i());
+	EXPECT_DOUBLE_EQ(1, t.j());
+	EXPECT_DOUBLE_EQ(-1, t.k());
+}
+TEST(PhysVectorTest, RotateVector) {
+	auto t = mathengine::PhysVector(1,1,1);
+	t = t.rotate(M_PI, mathengine::PhysVector(1,1,0));
+	EXPECT_DOUBLE_EQ(1, t.i());
+	EXPECT_DOUBLE_EQ(1, t.j());
+	EXPECT_DOUBLE_EQ(-1, t.k());
+}
+TEST(PhysVectorTest, RotateQuat) {
+	auto t = mathengine::PhysVector(1,1,1);
+	auto q = mathengine::PhysQuaternion(M_PI,1,1,0);
+	t = t.rotate(q);
+	EXPECT_DOUBLE_EQ(1, t.i());
+	EXPECT_DOUBLE_EQ(1, t.j());
+	EXPECT_DOUBLE_EQ(-1, t.k());
 }
 
 int main(int argc, char **argv) {

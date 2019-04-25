@@ -68,12 +68,25 @@ namespace mathengine {
 	double PhysQuaternion::magnitude() const noexcept {
 		return std::sqrt(square_sum());
 	}
-	void PhysQuaternion::normalize() noexcept {
+	void PhysQuaternion::normalize() {
 		*this /= magnitude();
 	}
-	PhysQuaternion PhysQuaternion::unit() const noexcept {
+	void PhysQuaternion::make_rotation() {
+		// Pre condition - Expects v to be unit
+		// Pre condition - Expects s to be an angle in radians
+		auto angle = s()/2;
+		v() *= sin(angle);
+		s(cos(angle));
+	}
+	PhysQuaternion PhysQuaternion::unit() const {
 		auto temp = *this;
 		temp.normalize();
+		return temp;
+	}
+	PhysQuaternion PhysQuaternion::rotation_unit() const {
+		auto temp = *this;
+		temp.v().normalize();
+		temp.make_rotation();
 		return temp;
 	}
 	PhysQuaternion PhysQuaternion::conjugate_of() const noexcept {

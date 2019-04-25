@@ -1,4 +1,6 @@
 #include "Vector.h"
+#include "Quaternion.h"
+
 namespace mathengine {
 	bool PhysVector::operator==(const PhysVector& o) const noexcept {
 		return i() == o.i() && j() == o.j() && k() == o.k();
@@ -94,6 +96,20 @@ namespace mathengine {
 		auto temp = PhysVector(*this);
 		temp.normalize();
 		return temp;
+	}
+	PhysVector PhysVector::rotate(const double angle, const PhysVector& axis){
+		auto q = PhysQuaternion(angle, axis.unit());
+		q.make_rotation();
+		return rotate_unit(q);
+	}
+	PhysVector PhysVector::rotate(const PhysQuaternion& q){
+		return rotate_unit(q.rotation_unit());
+	}
+	PhysVector PhysVector::rotate_unit(const PhysQuaternion& q){
+		// The quaternion here is set up for rotation
+		auto p = PhysQuaternion(*this);
+		p = q*p*q.inverse_of();
+		return p.v();
 	}
 
 }

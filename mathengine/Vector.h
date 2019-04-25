@@ -5,7 +5,10 @@
 #include <stdexcept>
 #include <iostream>
 
+
 namespace mathengine {
+	class PhysQuaternion;
+
 	class PhysVector {
 		public:
 			PhysVector() noexcept : _i{0}, _j{0}, _k{0}, mag{0}, mag_valid{true}{}
@@ -46,6 +49,9 @@ namespace mathengine {
 
 			PhysVector unit() const;
 
+			PhysVector rotate(const double angle, const PhysVector& axis);
+			PhysVector rotate(const PhysQuaternion& q);
+			PhysVector rotate_unit(const PhysQuaternion& q);
 			inline double i() const noexcept { return _i; }
 			inline double j() const noexcept { return _j; }
 			inline double k() const noexcept { return _k; }
