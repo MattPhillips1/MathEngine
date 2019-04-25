@@ -75,7 +75,7 @@ namespace mathengine {
 	void PhysQuaternion::normalize() noexcept {
 		*this /= magnitude();
 	}
-	PhysQuaternion PhysQuaternion::norm() const noexcept {
+	PhysQuaternion PhysQuaternion::unit() const noexcept {
 		auto temp = *this;
 		temp.normalize();
 		return temp;

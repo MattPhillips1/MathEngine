@@ -34,7 +34,7 @@ namespace mathengine {
 
 			double magnitude() const noexcept;
 			void normalize() noexcept;
-			PhysQuaternion norm() const noexcept;
+			PhysQuaternion unit() const noexcept;
 			PhysQuaternion conjugate_of() const noexcept;
 
 			PhysVector& v() noexcept {return _v;};

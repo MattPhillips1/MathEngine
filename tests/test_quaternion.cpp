@@ -139,9 +139,9 @@ TEST(PhysQuaternionTest, Normalize){
 	EXPECT_DOUBLE_EQ(4/std::sqrt(2*2+3*3+4*4+5*5), t.j());
 	EXPECT_DOUBLE_EQ(5/std::sqrt(2*2+3*3+4*4+5*5), t.k());
 }
-TEST(PhysQuaternionTest, Norm){
+TEST(PhysQuaternionTest, Unit){
 	auto v = mathengine::PhysQuaternion(2,3,4,5);
-	auto u = v.norm();
+	auto u = v.unit();
 	EXPECT_DOUBLE_EQ(2/std::sqrt(2*2+3*3+4*4+5*5), u.s());
 	auto t = u.v();
 	EXPECT_DOUBLE_EQ(3/std::sqrt(2*2+3*3+4*4+5*5), t.i());
