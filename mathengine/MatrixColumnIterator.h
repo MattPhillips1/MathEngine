@@ -19,7 +19,7 @@ namespace mathengine {
         using pointer = std::conditional_t<is_const, const T *, T *>;
         using difference_type = int;
 
-        using column_type = typename std::conditional<is_const, const MatrixColumn<T, num_cols>&, MatrixColumn<T, num_cols>&>::type;
+        using column_type = std::conditional_t<is_const, const MatrixColumn<T, num_cols>&, MatrixColumn<T, num_cols>&>;
 
         MatrixColumnIterator() = delete;
 
