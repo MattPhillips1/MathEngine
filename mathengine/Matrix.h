@@ -3,8 +3,15 @@
 
 #include <array>
 #include "Vector.h"
+// #include "MatrixColumnIterator.h"
+#include "MatrixColumn.h"
+
 namespace mathengine {
-	class PhysMatrix {
+    // template <typename T, int num_cols>
+    // class MatrixColumn;
+
+    template <typename T, int num_cols>
+	class Matrix {
 		/*
 		* Aligned in the following way (better cache performance)
 		* i       j       k
@@ -15,58 +22,63 @@ namespace mathengine {
 		* ie top row is one vector with i,j,k components
 		*/
 		public:
-			// Default, Copy, Move constructors generated
-			PhysMatrix() = default;
-			PhysMatrix(PhysVector&& a, PhysVector&& b, PhysVector&& c) : rows{a,b,c} {}
-			PhysMatrix(
-					const double i1, const double j1, const double k1,
-					const double i2, const double j2, const double k2,
-					const double i3, const double j3, const double k3
-					) : PhysMatrix(PhysVector{i1,j1,k1}, PhysVector{i2,j2,k2}, PhysVector{i3,j3,k3}) {}
-			PhysMatrix(const PhysVector& a, const PhysVector& b, const PhysVector& c) : rows{a,b,c} {}
 
-			bool operator==(const PhysMatrix& rhs) const noexcept;
-			bool operator!=(const PhysMatrix& rhs) const noexcept;
+			using MatrixRow = Vector<T, std::array<T, num_cols>, true>;
+			using MatrixCol = Vector<T, MatrixColumn<T, num_cols>, false>;
+			// Default, Copy, Move constructors generated
+			constexpr explicit Matrix(int num_rows) : rows(num_rows) {}
+			/*
+			bool operator==(const Matrix& rhs) const noexcept;
+			bool operator!=(const Matrix& rhs) const noexcept;
 
 			// Matrix Addition
-			PhysMatrix& operator += (const PhysMatrix& rhs) noexcept;
-			const PhysMatrix operator+(const PhysMatrix& rhs) noexcept;
+			Matrix& operator += (const Matrix& rhs) noexcept;
+			Matrix operator+(const Matrix& rhs) noexcept;
 
 			// Matrix Subtraction
-			PhysMatrix& operator -= (const PhysMatrix& rhs) noexcept;
-			const PhysMatrix operator-(const PhysMatrix& rhs) noexcept;
+			Matrix& operator -= (const Matrix& rhs) noexcept;
+			const Matrix operator-(const Matrix& rhs) noexcept;
 
 			// Scalar Multiplication
-			PhysMatrix& operator*=(const double s) noexcept;
-			const PhysMatrix operator*(const double s) const noexcept;
-			friend const PhysMatrix operator*(const double s, const PhysMatrix& v) noexcept;
+			Matrix& operator*=(T s) noexcept;
+			Matrix operator*(T s) const noexcept;
+			friend Matrix operator*(T s, const Matrix& v) noexcept {
+			    return v*s;
+			}
 
 			// Scalar Division
-			PhysMatrix& operator/=(const double s);
-			const PhysMatrix operator/(const double s) const;
+			Matrix& operator/=(T s);
+			Matrix operator/(T s) const;
 
 			// Vector & Matrix Multiplication
-			const PhysVector operator*(const PhysVector& rhs) const noexcept;
-			PhysMatrix& operator*=(const PhysMatrix& rhs) noexcept;
-			const PhysMatrix operator*(const PhysMatrix& rhs) const noexcept;
-
-			PhysVector& operator[](const unsigned int i) { return rows[i]; }
-			PhysVector operator[](const unsigned int i) const { return rows[i]; }
-			PhysVector col(const unsigned int i) const;
-			PhysVector i() const { return PhysVector(rows[0].i(), rows[1].i(), rows[2].i()); }
-			PhysVector j() const { return PhysVector(rows[0].j(), rows[1].j(), rows[2].j()); }
-			PhysVector k() const { return PhysVector(rows[0].k(), rows[1].k(), rows[2].k()); }
+            template<typename U, typename Container>
+			Vector<U, Container> operator*(const Vector<U, Container>& rhs) const noexcept;
+			template<typename U, bool is_const>
+			Vector<U> operator*(const MatrixColumn<U, num_cols, is_const>& rhs) const noexcept;
+			Matrix& operator*=(const Matrix& rhs) noexcept;
+			Matrix operator*(const Matrix& rhs) const noexcept;
 
 			// Matrix Operations
 			void transpose() noexcept;
-			PhysMatrix transpose_of() const noexcept;
-			PhysMatrix inverse_of() const;
-			double det() const noexcept;
+			Matrix transpose_of() const noexcept;
+			Matrix inverse_of() const;
+			T det() const noexcept;
+			*/
+			MatrixRow& row(int i) noexcept { return rows[i]; }
+			const MatrixRow& row(int i) const noexcept { return rows[i]; }
+			MatrixCol col(int i) noexcept { return MatrixCol(MatrixColumn<T, num_cols>(*this, i)); }
+			const MatrixCol col(int i) const noexcept { return MatrixCol(MatrixColumn<T, num_cols>(*this, i)); }
+
+			void add_row(void) { rows.emplace_back(num_cols); }
+			int n_rows(void) const noexcept { return rows.size(); }
+
+			constexpr int n_cols(void) const noexcept { return num_cols; }
+
 
 
 		private:
-			std::array<PhysVector, 3> rows;
-
+			std::vector<MatrixRow> rows;
+			friend class MatrixColumn<T, num_cols>;
 	};
 }
 #endif

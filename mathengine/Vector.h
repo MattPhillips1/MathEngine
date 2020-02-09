@@ -4,69 +4,120 @@
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
+#include <vector>
+#include <numeric>
 
+#define ENABLE_IF_OWNING bool owning_check = is_owning, typename = std::enable_if_t<owning_check>
+#define ENABLE_IF_NOT_OWNING bool owning_check = is_owning, typename = std::enable_if_t<!owning_check>
 
 namespace mathengine {
-	class PhysQuaternion;
-
-	class PhysVector {
+	
+    /*template <typename T>
+	class Quaternion;
+*/
+    template <typename T, typename Container = std::vector<T>, bool is_owning = true>
+	class Vector {
 		public:
-			PhysVector() noexcept : _i{0}, _j{0}, _k{0}, mag{0}, mag_valid{true}{}
-			PhysVector(double i, double j, double k) noexcept : _i{i}, _j{j}, _k{k}, mag{0}, mag_valid{false}{}
-			PhysVector(const PhysVector& o) noexcept : _i{o.i()}, _j{o.j()}, _k{o.k()}, mag{o.mag}, mag_valid{o.mag_valid}{}
-			PhysVector(PhysVector&& o) noexcept : _i{o.i()}, _j{o.j()}, _k{o.k()}, mag{o.mag}, mag_valid{o.mag_valid} {}
-			PhysVector& operator=(const PhysVector& o) noexcept;
-			bool operator==(const PhysVector& o) const noexcept;
-			bool operator!=(const PhysVector& o) const noexcept;
 
-			friend std::ostream& operator<<(std::ostream& os, const PhysVector& rhs) noexcept { return os << "[ " << rhs.i() << ", " << rhs.j() << ", " << rhs.k() <<" ]";}
+			using container = typename std::conditional<is_owning, Container, Container&>::type;
 
+			template <ENABLE_IF_OWNING>
+			Vector() : vec{}, mag{0}, mag_valid{true}{}
+			template <ENABLE_IF_OWNING>
+			Vector(std::initializer_list<T> l) noexcept : vec{l}, mag{0}, mag_valid{false}{}
+			template <typename NC, bool owning, ENABLE_IF_OWNING>
+			explicit Vector(const Vector<T, NC, owning>& o) noexcept : vec{o.vec}, mag{o.mag}, mag_valid{o.mag_valid}{}
+            template <typename NC, ENABLE_IF_OWNING>
+			explicit Vector(Vector<T, NC, true>&& o) noexcept : vec{std::move(o.vec)}, mag{o.mag}, mag_valid{o.mag_valid}{}
+			
+			// template <ENABLE_IF_NOT_OWNING>
+			explicit Vector(Container&& cont) : vec(std::move(cont)), mag{0}, mag_valid{false} {}
+			
+			template <ENABLE_IF_OWNING>
+			constexpr explicit Vector(int size) : vec(container(size)), mag{0}, mag_valid{true} {}
+
+			// template <ENABLE_IF_OWNING>
+			// explicit Vector (Container&& o) : vec{std::move(o)}, mag{0}, mag_valid{false}{}
+			
+			template <typename NC, bool owning>
+			Vector& operator=(const Vector<T, NC, owning>& o) noexcept;
+
+			template <typename NC, bool owning>
+			bool operator==(const Vector<T, NC, owning>& o) const noexcept;
+			template <typename NC, bool owning>
+			bool operator!=(const Vector<T, NC, owning>& o) const noexcept;
+
+			friend std::ostream& operator<<(std::ostream& os, const Vector& rhs) noexcept {
+			    os << "[ ";
+			    auto it = rhs.begin();
+			    for (; it != rhs.vec.end() - 1; ++it){
+			        os << *it << ", ";
+			    }
+			    os << *it << " ]";
+			    return os;
+			}
+
+			T& operator[](int i) noexcept { return vec[i]; }
+			T operator[](int i) const noexcept { return vec[i]; }
+
+/*
 			// Vector addition
-			PhysVector& operator+=(const PhysVector& o) noexcept;
-			const PhysVector operator+(const PhysVector& o) const noexcept;
+			Vector& operator+=(const Vector& o) noexcept;
+			Vector operator+(const Vector& o) const noexcept;
 
 			// Vector subtraction
-			PhysVector& operator-=(const PhysVector& o) noexcept;
-			const PhysVector operator-(const PhysVector& o) const noexcept;
+			Vector& operator-=(const Vector& o) noexcept;
+			Vector operator-(const Vector& o) const noexcept;
 
 			// Scalar Multiplication
-			PhysVector& operator*=(const double s) noexcept;
-			const PhysVector operator*(const double s) const noexcept;
-			friend const PhysVector operator*(const double k, const PhysVector& v) noexcept;
+			Vector& operator*=(T s) noexcept;
+			Vector operator*(T s) const noexcept;
+			friend Vector operator*(T k, const Vector& v) noexcept {
+			    return v*k;
+			}
+
+			
 
 			// Scalar division
-			PhysVector& operator/=(const double s);
-			const PhysVector operator/(const double s) const;
+			Vector& operator/=(T s);
+			Vector operator/(T s) const;
 
-			double dot(const PhysVector& o) const noexcept;
-
-			PhysVector cross(const PhysVector& o) const noexcept;
+			T dot(const Vector& o) const noexcept;
 
 			double magnitude() const noexcept;
-			inline double square_sum() const noexcept { return i()*i() + j()*j() + k()*k(); }
+			inline T square_sum() const noexcept {
+			    return std::accumulate(vec.cbegin(), vec.cend(), 0, [](const T& a, const T& b) {
+                    return a + b * b;
+                });
+			}
+
+			inline int size() const noexcept { return vec.size(); }
 
 			void normalize();
 
-			PhysVector unit() const;
+			Vector unit() const;
 
-			PhysVector rotate(const double angle, const PhysVector& axis);
-			PhysVector rotate(const PhysQuaternion& q);
-			PhysVector rotate_unit(const PhysQuaternion& q);
-			inline double i() const noexcept { return _i; }
-			inline double j() const noexcept { return _j; }
-			inline double k() const noexcept { return _k; }
+			auto begin() noexcept { return vec.begin(); }
+			auto end() noexcept { return vec.end(); }
 
-			inline void i(const double n) noexcept { mag_valid = false; _i = n; }
-			inline void j(const double n) noexcept { mag_valid = false; _j = n; }
-			inline void k(const double n) noexcept { mag_valid = false; _k = n; }
+			auto cbegin() const noexcept { return vec.cbegin(); }
+			auto cend() const noexcept { return vec.cend(); }
 
-		private:
-			double _i;
-			double _j;
-			double _k;
+			Vector cross(const Vector& o) const noexcept;
+			Vector& rotate(double angle, const Vector& axis);
+            Vector& rotate(const Quaternion<T>& q);
+            Vector& rotate_unit(const Quaternion<T>& q);
+		*/
+
+        private:
+		template<typename U, typename NC, bool own>
+		friend class Vector;
+	        Container vec;
 			mutable double mag;
 			mutable bool mag_valid;
 
 	};
 }
+
+#include "Vector.cpp"
 #endif

@@ -6,17 +6,27 @@ class PhysMatrixTest : public ::testing::Test {
 
 };
 
-TEST(PhysMatrixTest, DefaultConstructor) {
-	auto t = mathengine::PhysMatrix();
+TEST(PhysMatrixTestInt, DefaultConstructor) {
+	auto t = mathengine::Matrix<int>();
 	for(int i = 0; i < 3; ++i){
 		const auto& r = t[i];
-		EXPECT_DOUBLE_EQ(0, r.i());
-		EXPECT_DOUBLE_EQ(0, r.j());
-		EXPECT_DOUBLE_EQ(0, r.k());
+		EXPECT_EQ(0, r.i());
+		EXPECT_EQ(0, r.j());
+		EXPECT_EQ(0, r.k());
 	}
 }
+
+TEST(PhysMatrixTestDouble, DefaultConstructor) {
+    auto t = mathengine::Matrix<double>();
+    for(int i = 0; i < 3; ++i){
+        const auto& r = t[i];
+        EXPECT_DOUBLE_EQ(0, r.i());
+        EXPECT_DOUBLE_EQ(0, r.j());
+        EXPECT_DOUBLE_EQ(0, r.k());
+    }
+}
 TEST(PhysMatrixTest, ExplicitConstructor) {
-	auto t = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
+	auto t = mathengine::Matrix<double>(1, 0, 0, 0, 1, 0, 0, 0, 1);
 	EXPECT_DOUBLE_EQ(1, t[0].i());
 	EXPECT_DOUBLE_EQ(0, t[0].j());
 	EXPECT_DOUBLE_EQ(0, t[0].k());
@@ -27,11 +37,23 @@ TEST(PhysMatrixTest, ExplicitConstructor) {
 	EXPECT_DOUBLE_EQ(0, t[2].j());
 	EXPECT_DOUBLE_EQ(1, t[2].k());
 }
+TEST(PhysMatrixTest, ExplicitConstructor) {
+    auto t = mathengine::Matrix<int>(1, 0, 0, 0, 1, 0, 0, 0, 1);
+    EXPECT_DOUBLE_EQ(1, t[0].i());
+    EXPECT_DOUBLE_EQ(0, t[0].j());
+    EXPECT_DOUBLE_EQ(0, t[0].k());
+    EXPECT_DOUBLE_EQ(0, t[1].i());
+    EXPECT_DOUBLE_EQ(1, t[1].j());
+    EXPECT_DOUBLE_EQ(0, t[1].k());
+    EXPECT_DOUBLE_EQ(0, t[2].i());
+    EXPECT_DOUBLE_EQ(0, t[2].j());
+    EXPECT_DOUBLE_EQ(1, t[2].k());
+}
 TEST(PhysMatrixTest, VectorCopyConstructor) {
-	auto r1 = mathengine::PhysVector(2,3,4);
-	auto r2 = mathengine::PhysVector(5,12,6);
-	auto r3 = mathengine::PhysVector(28,8,6);
-	auto t = mathengine::PhysMatrix(r1,r2,r3);
+	auto r1 = mathengine::Vector(2, 3, 4);
+	auto r2 = mathengine::Vector(5, 12, 6);
+	auto r3 = mathengine::Vector(28, 8, 6);
+	auto t = mathengine::Matrix(r1, r2, r3);
 	EXPECT_EQ(t[0], r1);
 	r1.i(0);
 	EXPECT_NE(t[0], r1);
@@ -45,17 +67,17 @@ TEST(PhysMatrixTest, VectorCopyConstructor) {
 	EXPECT_NE(t[2], r3);
 }
 TEST(PhysMatrixTest, VectorMoveConstructor) {
-	auto r1 = mathengine::PhysVector(2,3,4);
-	auto r2 = mathengine::PhysVector(5,12,6);
-	auto r3 = mathengine::PhysVector(28,8,6);
-	auto t1 = mathengine::PhysMatrix(r1,r2,r3);
-	auto t2 = mathengine::PhysMatrix(std::move(r1), std::move(r2), std::move(r3));
+	auto r1 = mathengine::Vector(2, 3, 4);
+	auto r2 = mathengine::Vector(5, 12, 6);
+	auto r3 = mathengine::Vector(28, 8, 6);
+	auto t1 = mathengine::Matrix(r1, r2, r3);
+	auto t2 = mathengine::Matrix(std::move(r1), std::move(r2), std::move(r3));
 
 	EXPECT_EQ(t1, t2);
 }
 TEST(PhysMatrixTest, AdditionAssign) {
-	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
-	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
+	auto t1 = mathengine::Matrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
+	auto t2 = mathengine::Matrix(1, 4, 3, 0, 1, 0, 6, 7, 1);
 	t1 += t2;
 	EXPECT_DOUBLE_EQ(2, t1[0].i());
 	EXPECT_DOUBLE_EQ(4, t1[0].j());
@@ -68,8 +90,8 @@ TEST(PhysMatrixTest, AdditionAssign) {
 	EXPECT_DOUBLE_EQ(2, t1[2].k());
 }
 TEST(PhysMatrixTest, Addition) {
-	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
-	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
+	auto t1 = mathengine::Matrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
+	auto t2 = mathengine::Matrix(1, 4, 3, 0, 1, 0, 6, 7, 1);
 	auto t3 = t1 + t2;
 	EXPECT_DOUBLE_EQ(2, t3[0].i());
 	EXPECT_DOUBLE_EQ(4, t3[0].j());
@@ -82,8 +104,8 @@ TEST(PhysMatrixTest, Addition) {
 	EXPECT_DOUBLE_EQ(2, t3[2].k());
 }
 TEST(PhysMatrixTest, SubtractionAssign) {
-	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
-	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
+	auto t1 = mathengine::Matrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
+	auto t2 = mathengine::Matrix(1, 4, 3, 0, 1, 0, 6, 7, 1);
 	t1 -= t2;
 	EXPECT_DOUBLE_EQ(0, t1[0].i());
 	EXPECT_DOUBLE_EQ(-4, t1[0].j());
@@ -96,8 +118,8 @@ TEST(PhysMatrixTest, SubtractionAssign) {
 	EXPECT_DOUBLE_EQ(0, t1[2].k());
 }
 TEST(PhysMatrixTest, Subtraction) {
-	auto t1 = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
-	auto t2 = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
+	auto t1 = mathengine::Matrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
+	auto t2 = mathengine::Matrix(1, 4, 3, 0, 1, 0, 6, 7, 1);
 	auto t3 = t1 - t2;
 	EXPECT_DOUBLE_EQ(0, t3[0].i());
 	EXPECT_DOUBLE_EQ(-4, t3[0].j());
@@ -110,7 +132,7 @@ TEST(PhysMatrixTest, Subtraction) {
 	EXPECT_DOUBLE_EQ(0, t3[2].k());
 }
 TEST(PhysMatrixTest, ScalarMultiplicationAssign){
-	auto t = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
+	auto t = mathengine::Matrix(1, 4, 3, 0, 1, 0, 6, 7, 1);
 	t *= 2;
 
 	EXPECT_DOUBLE_EQ(2, t[0].i());
@@ -124,7 +146,7 @@ TEST(PhysMatrixTest, ScalarMultiplicationAssign){
 	EXPECT_DOUBLE_EQ(2, t[2].k());
 }
 TEST(PhysMatrixTest, ScalarMultiplication){
-	auto t = mathengine::PhysMatrix(1,4,3,0,1,0,6,7,1);
+	auto t = mathengine::Matrix(1, 4, 3, 0, 1, 0, 6, 7, 1);
 	auto t2 = 2*t;
 
 	EXPECT_DOUBLE_EQ(2, t2[0].i());
@@ -138,7 +160,7 @@ TEST(PhysMatrixTest, ScalarMultiplication){
 	EXPECT_DOUBLE_EQ(2, t2[2].k());
 }
 TEST(PhysMatrixTest, ScalarDivisionAssign){
-	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
+	auto t = mathengine::Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	t /= 2;
 
 	EXPECT_DOUBLE_EQ(0.5, t[0].i());
@@ -152,7 +174,7 @@ TEST(PhysMatrixTest, ScalarDivisionAssign){
 	EXPECT_DOUBLE_EQ(4.5, t[2].k());
 }
 TEST(PhysMatrixTest, ScalarDivision){
-	auto t1 = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
+	auto t1 = mathengine::Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	auto t = t1/2;
 
 	EXPECT_DOUBLE_EQ(0.5, t[0].i());
@@ -166,16 +188,16 @@ TEST(PhysMatrixTest, ScalarDivision){
 	EXPECT_DOUBLE_EQ(4.5, t[2].k());
 }
 TEST(PhysMatrixTest, VectorMultiplication){
-	auto v = mathengine::PhysVector(1,2,3);
-	auto m = mathengine::PhysMatrix(3,3,3,3,3,3,3,3,3);
+	auto v = mathengine::Vector(1, 2, 3);
+	auto m = mathengine::Matrix(3, 3, 3, 3, 3, 3, 3, 3, 3);
 	auto u = m*v;
 	EXPECT_DOUBLE_EQ(18, u.i());
 	EXPECT_DOUBLE_EQ(18, u.j());
 	EXPECT_DOUBLE_EQ(18, u.k());
 }
 TEST(PhysMatrixTest, MatrixMultiplicationAssign){
-	auto a = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
-	auto b = mathengine::PhysMatrix(7,8,9,1,2,3,4,5,6);
+	auto a = mathengine::Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	auto b = mathengine::Matrix(7, 8, 9, 1, 2, 3, 4, 5, 6);
 	a *= b;
 	EXPECT_EQ(7+2+3*4, a[0].i());
 	EXPECT_EQ(8+2*2+3*5, a[0].j());
@@ -188,8 +210,8 @@ TEST(PhysMatrixTest, MatrixMultiplicationAssign){
 	EXPECT_EQ(7*9+8*3+9*6, a[2].k());
 }
 TEST(PhysMatrixTest, MatrixMultiplication){
-	auto c = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
-	auto b = mathengine::PhysMatrix(7,8,9,1,2,3,4,5,6);
+	auto c = mathengine::Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	auto b = mathengine::Matrix(7, 8, 9, 1, 2, 3, 4, 5, 6);
 	auto a = c*b;
 	EXPECT_EQ(7+2+3*4, a[0].i());
 	EXPECT_EQ(8+2*2+3*5, a[0].j());
@@ -202,36 +224,36 @@ TEST(PhysMatrixTest, MatrixMultiplication){
 	EXPECT_EQ(7*9+8*3+9*6, a[2].k());
 }
 TEST(PhysMatrixTest, Transpose){
-	auto r1 = mathengine::PhysVector(1,2,3);
-	auto r2 = mathengine::PhysVector(4,5,6);
-	auto r3 = mathengine::PhysVector(7,8,9);
-	auto t = mathengine::PhysMatrix(r1, r2, r3);
+	auto r1 = mathengine::Vector(1, 2, 3);
+	auto r2 = mathengine::Vector(4, 5, 6);
+	auto r3 = mathengine::Vector(7, 8, 9);
+	auto t = mathengine::Matrix(r1, r2, r3);
 	t.transpose();
 	EXPECT_EQ(t.i(), r1);
 	EXPECT_EQ(t.j(), r2);
 	EXPECT_EQ(t.k(), r3);
 }
 TEST(PhysMatrixTest, TransposeOf){
-	auto r1 = mathengine::PhysVector(1,2,3);
-	auto r2 = mathengine::PhysVector(4,5,6);
-	auto r3 = mathengine::PhysVector(7,8,9);
-	auto u = mathengine::PhysMatrix(r1, r2, r3);
+	auto r1 = mathengine::Vector(1, 2, 3);
+	auto r2 = mathengine::Vector(4, 5, 6);
+	auto r3 = mathengine::Vector(7, 8, 9);
+	auto u = mathengine::Matrix(r1, r2, r3);
 	auto t = u.transpose_of();
 	EXPECT_EQ(t.i(), r1);
 	EXPECT_EQ(t.j(), r2);
 	EXPECT_EQ(t.k(), r3);
 }
 TEST(PhysMatrixTest, InverseOfIdentity){
-	auto t = mathengine::PhysMatrix(1,0,0,0,1,0,0,0,1);
+	auto t = mathengine::Matrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
 	auto u = t.inverse_of();
 	EXPECT_EQ(t,u);
 }
 TEST(PhysMatrixTest, InverseOfException){
-	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
+	auto t = mathengine::Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	ASSERT_THROW(t.inverse_of(), std::runtime_error);
 }
 TEST(PhysMatrixTest, InverseOf){
-	auto t = mathengine::PhysMatrix(1,4,5,7,2,8,9,1,2);
+	auto t = mathengine::Matrix(1, 4, 5, 7, 2, 8, 9, 1, 2);
 	t = t.inverse_of();
 	EXPECT_DOUBLE_EQ(-4.0/173.0, t[0].i());
 	EXPECT_DOUBLE_EQ(-3.0/173.0, t[0].j());
@@ -244,7 +266,7 @@ TEST(PhysMatrixTest, InverseOf){
 	EXPECT_DOUBLE_EQ(-26.0/173.0, t[2].k());
 }
 TEST(PhysMatrixTest, Determinate){
-	auto t = mathengine::PhysMatrix(1,2,3,4,5,6,7,8,9);
+	auto t = mathengine::Matrix(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	auto d = t.det();
 	EXPECT_DOUBLE_EQ(0,d);
 }

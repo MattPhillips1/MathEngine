@@ -1,3 +1,7 @@
-add_library(MathEngine STATIC Vector.h Vector.cpp Matrix.h Matrix.cpp Quaternion.h Quaternion.cpp)
-add_executable(math_engine math_engine.cpp)
-target_link_libraries(math_engine MathEngine)
+project(MathEngine)
+
+add_library(MathEngine STATIC Vector.h Matrix.h MatrixColumn.h)
+set_target_properties(MathEngine PROPERTIES LINKER_LANGUAGE CXX)
+
+install(TARGETS MathEngine DESTINATION lib)
+install(FILES Vector.h Matrix.h MatrixColumn.h DESTINATION include)

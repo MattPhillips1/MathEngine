@@ -1,50 +1,50 @@
 #ifndef P_QUATERNION
 #define P_QUATERNION
-
+/*
 #include "Vector.h"
 
 namespace mathengine {
-	class PhysQuaternion {
+    template <typename T>
+	class Quaternion {
 		public:
-			PhysQuaternion(const double s, const PhysVector& v) : _s{s}, _v{v} {}
-			PhysQuaternion(const double s, const double i, const double j, const double k) : _s{s}, _v{i,j,k} {}
-			PhysQuaternion(const PhysVector& v) : PhysQuaternion(0,v) {}
-			PhysQuaternion(const double s, PhysVector&& v) : _s{s}, _v{std::move(v)} {}
-			PhysQuaternion(PhysVector&& v) : PhysQuaternion(0, std::move(v)) {}
-			PhysQuaternion(const PhysQuaternion& o) = default;
-			PhysQuaternion(PhysQuaternion&& o) = default;
-			PhysQuaternion& operator=(const PhysQuaternion& rhs) noexcept = default;
+			Quaternion(const double s, const Vector3D<T>& v) : _s{s}, _v{v} {}
+			Quaternion(const double s, const double i, const double j, const double k) : _s{s}, _v{i, j, k} {}
+			Quaternion(const Vector3D<T>& v) : Quaternion(0, v) {}
+			Quaternion(const double s, Vector3D<T>&& v) : _s{s}, _v{std::move(v)} {}
+			Quaternion(Vector3D<T>&& v) : Quaternion(0, std::move(v)) {}
 
-			bool operator==(const PhysQuaternion& rhs) const noexcept;
-			bool operator!=(const PhysQuaternion& rhs) const noexcept;
+			bool operator==(const Quaternion& rhs) const noexcept;
+			bool operator!=(const Quaternion& rhs) const noexcept;
 
-			PhysQuaternion& operator+=(const PhysQuaternion& rhs) noexcept;
-			const PhysQuaternion operator+(const PhysQuaternion& rhs) const noexcept;
-			PhysQuaternion& operator-=(const PhysQuaternion& rhs) noexcept;
-			const PhysQuaternion operator-(const PhysQuaternion& rhs) const noexcept;
+			Quaternion& operator+=(const Quaternion& rhs) noexcept;
+			Quaternion operator+(const Quaternion& rhs) const noexcept;
+			Quaternion& operator-=(const Quaternion& rhs) noexcept;
+			Quaternion operator-(const Quaternion& rhs) const noexcept;
 
-			PhysQuaternion& operator*=(const double rhs) noexcept;
-			const PhysQuaternion operator*(const double rhs) const noexcept;
-			friend const PhysQuaternion operator*(const double lhs, const PhysQuaternion& rhs);
-			PhysQuaternion& operator/=(const double rhs);
-			const PhysQuaternion operator/(const double rhs) const;
+			Quaternion& operator*=(double rhs) noexcept;
+			Quaternion operator*(double rhs) const noexcept;
 
-			PhysQuaternion& operator*=(const PhysQuaternion& rhs) noexcept;
-			const PhysQuaternion operator*(const PhysQuaternion& rhs) const noexcept;
+			friend Quaternion<T> operator*(double lhs, const Quaternion& rhs) { return rhs*lhs; }
+
+			Quaternion& operator/=(double rhs);
+			Quaternion operator/(double rhs) const;
+
+			Quaternion& operator*=(const Quaternion& rhs) noexcept;
+			Quaternion operator*(const Quaternion& rhs) const noexcept;
 
 			double magnitude() const noexcept;
 			inline double square_sum() const noexcept { return s()*s() + v().square_sum(); }
 
 			void normalize();
 			void make_rotation();
-			PhysQuaternion unit() const;
-			PhysQuaternion rotation_unit() const;
-			PhysQuaternion conjugate_of() const noexcept;
+			Quaternion unit() const;
+			Quaternion rotation_unit() const;
+			Quaternion conjugate_of() const noexcept;
 
-			PhysQuaternion inverse_of() const;
+			Quaternion inverse_of() const;
 
-			PhysVector& v() noexcept {return _v;};
-			const PhysVector& v() const noexcept {return _v;};
+			Vector3D<T>& v() noexcept {return _v;};
+			const Vector3D<T>& v() const noexcept {return _v;};
 
 			double s() const noexcept {return _s;}
 			void s(const double n) noexcept { _s = n; }
@@ -52,8 +52,8 @@ namespace mathengine {
 
 		private:
 			double _s;
-			PhysVector _v;
+			Vector3D<T> _v;
 
 	};
-}
+}/*
 #endif

@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall  -Werror -Wpedantic -Wno-variadic-macros -Wno-shadow -O3   CMakeFiles/Quaternion.dir/test_quaternion.cpp.o  -o Quaternion ../mathengine/libMathEngine.a ../lib/libgtest_main.a ../lib/libgtest.a -lpthread 
