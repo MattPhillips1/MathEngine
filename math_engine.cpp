@@ -7,9 +7,14 @@ int main(){
 	auto m = mathengine::Matrix<int, 4>(4);
 	auto& r1 = m.row(0);
 	r1[0] = 1;
+	r1[1] = 1;
 	auto c1 = m.col(0);
-	r1 = c1;
 
+	std::cout << c1 << '\n';
+	std::cout << r1 << '\n';
+	c1 = r1;
+	std::cout << c1 << '\n';
+	std::cout << r1 << '\n';
 	auto& r2 = m.row(0);
 	std::cout << r1[0] << '\n';
 	std::cout << c1[0] << '\n';

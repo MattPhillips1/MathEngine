@@ -10,22 +10,24 @@ namespace mathengine {
     template <typename T, int num_cols>
     class MatrixColumn;
 
-    template<typename T, bool is_const>
+    template<typename T, int num_cols, bool is_const>
     class MatrixColumnIterator {
         public:
         using iterator_category = std::random_access_iterator_tag;
-        using value_type = std::conditional<is_const, const T, T>;
-        using reference = std::conditional<is_const, const T &, T>;
-        using pointer = std::conditional<is_const, const T *, T>;
+        using value_type = std::conditional_t<is_const, const T, T>;
+        using reference = std::conditional_t<is_const, const T &, T &>;
+        using pointer = std::conditional_t<is_const, const T *, T>;
         using difference_type = int;
+
+        using column_type = typename std::conditional<is_const, const MatrixColumn<T, num_cols>&, MatrixColumn<T, num_cols>&>::type;
 
         MatrixColumnIterator() = delete;
 
-        MatrixColumnIterator(MatrixColumn<T>& col, int curr_row) : column{col}, curr_row{curr_row} {}
+        MatrixColumnIterator(column_type col, int curr_row) : column{col}, curr_row{curr_row} {}
 
-        explicit MatrixColumnIterator(const MatrixColumnIterator<T, false> &it) : column{it.column}, curr_row{it.curr_row} {}
+        MatrixColumnIterator(const MatrixColumnIterator<T, num_cols, false> &it) : column{it.column}, curr_row{it.curr_row} {}
 
-        reference operator*() const { return col[curr_row]; }
+        reference operator*() const { return column[curr_row]; }
 
         MatrixColumnIterator &operator++() {
             ++curr_row;
@@ -84,7 +86,7 @@ namespace mathengine {
 
         private:
             int curr_row;
-            MatrixColumn<T>& column;
+            column_type column;
     };
 }
 

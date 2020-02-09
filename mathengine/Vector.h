@@ -49,8 +49,8 @@ namespace mathengine {
 
 			friend std::ostream& operator<<(std::ostream& os, const Vector& rhs) noexcept {
 			    os << "[ ";
-			    auto it = rhs.begin();
-			    for (; it != rhs.vec.end() - 1; ++it){
+			    auto it = rhs.vec.begin();
+			    for (; it != rhs.vec.end(); ++it){
 			        os << *it << ", ";
 			    }
 			    os << *it << " ]";
